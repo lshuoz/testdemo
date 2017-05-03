@@ -1,0 +1,312 @@
+/*
+ * =====================================================================================
+ *
+ *       Filename:  strtoktest.c
+ *
+ *    Description:  
+ *
+ *        Version:  1.0
+ *        Created:  2016年02月18日 15时11分43秒
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  lshuoz (), lshuoz.scu@gmail.com
+ *   Organization:  
+ *
+ * =====================================================================================
+ */
+
+#include<stdio.h>
+#include<string.h>
+
+#define  Lib_PrnStr printf
+#define  BYTE unsigned char 
+#define  s_Printer_Debug printf
+#define  uchar unsigned char
+#define  E_PRT_DATAFORMAT (-1)
+#define  OK 0
+
+static unsigned char *pStrtok;
+unsigned char s8F03[]="\x10\xb0\xe6\xb1\xbe\x3a\x53\x2d\x4a\x53\x54\x4d\x33\x30\x30\x30\x2d\x4e\x30\x30\x56\x31\x2e\x31\x31\x36\x30\x33\x32\x32\x0a\xc9\xcc\xbb\xa7\xc3\xfb\x3a\xb9\xe3\xd6\xdd\xda\xe4\xc4\xb0\xbf\xc6\xbc\xbc\xd3\xd0\xcf\xde\xb9\xab\xcb\xbe\xcc\xe5\xd3\xfd\xb6\xab\xc3\xc5\xb5\xea\xb9\xe3\xd6\xdd\xda\xe4\xc4\xb0\xbf\xc6\x0a\xc9\xcc\xbb\xa7\xba\xc5\x3a\x39\x39\x30\x34\x34\x30\x31\x35\x34\x31\x31\x36\x30\x30\x30\x0a\xd6\xd5\xb6\xcb\xba\xc5\x3a\x30\x30\x30\x30\x30\x30\x34\x30\x20\x20\xb2\xd9\xd7\xf7\xd4\xb1\x3a\xa3\xbf\x0a\xb7\xa2\xbf\xa8\xbb\xfa\xb9\xb9\x3a\xd6\xd0\xb9\xfa\xbd\xa8\xc9\xe8\xd2\xf8\xd0\xd0\x20\x20\x0a\xca\xd5\xb5\xa5\xbb\xfa\xb9\xb9\x3a\x34\x38\x32\x31\x30\x30\x30\x31\x0a\x7e\xbf\xa8\xba\xc5\x3a\x36\x32\x32\x37\x30\x30\x2a\x2a\x2a\x2a\x2a\x2a\x35\x30\x33\x30\x20\x53\x7e\x0a\x7e\xbd\xbb\xd2\xd7\xc0\xe0\xd0\xcd\x3a\xcf\xfb\xb7\xd1\x7e\x0a\xd3\xd0\xd0\xa7\xc6\xda\x3a\x20\x20\x20\x20\x20\x20\x20\xc5\xfa\xb4\xce\xba\xc5\x3a\x30\x30\x30\x31\x32\x34\x0a\xc6\xbe\xd6\xa4\xba\xc5\x3a\x30\x30\x30\x31\x32\x37\x20\xca\xda\xc8\xa8\xc2\xeb\x3a\x0a\xbd\xbb\xd2\xd7\xb2\xce\xbf\xbc\xba\xc5\x3a\x31\x36\x30\x35\x32\x33\x32\x35\x30\x30\x36\x39\x0a\xca\xb1\xbc\xe4\x3a\x32\x30\x31\x36\x2d\x30\x35\x2d\x32\x33\x20\x31\x32\x3a\x30\x30\x3a\x35\x38\x0a\x7e\xbd\xf0\xb6\xee\x3a\x52\x4d\x42\x20\x30\x2e\x31\x30\x7e\x0a\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x0a\xbd\xbb\xd2\xd7\xb5\xa5\xba\xc5\x3a\x37\x34\x31\x34\x30\x30\x31\x37\x20\x20\x42\x0a\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x0a\x11\x7e\xb3\xd6\xbf\xa8\xc8\xcb\xc7\xa9\xc3\xfb\x3a\x7e\x0a\x0a\x0a\xb1\xbe\xc8\xcb\xc8\xb7\xc8\xcf\xd2\xd4\xc9\xcf\xbd\xbb\xd2\xd7\x2c\xcd\xac\xd2\xe2\xbd\xab\xc6\xe4\xbc\xc6\xc8\xeb\xb1\xbe\xd5\xcb\xbb\xa7\x0a\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x0a\x35\x2e\x31\xc6\xbe\xb4\xcb\xd0\xa1\xc6\xb1\xcf\xed\xca\xdc\xb6\xee\xcd\xe2\x39\xd5\xdb\xd3\xc5\xbb\xdd\xa3\xac\xb6\xe0\xcf\xfb\xb6\xe0\xb5\xc3\xa3\xac\xca\xb1\xb2\xbb\xce\xd2\xb4\xfd\xbb\xfa\xb2\xbb\xbf\xc9\xca\xa7\xca\xa7\x0a\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x0a\x43\x4f\x55\x50\x4f\x4e\x53\x45\x4e\x54\x52\x59\x0a\x12\xcd\xa8\xc1\xaa\xbf\xcd\xbb\xa7\xba\xc5\x3a\x39\x39\x30\x34\x34\x30\x31\x34\x38\x31\x36\x36\x30\x30\x30\x0a\x7e\xb3\xd6\xbf\xa8\xc8\xcb\xc7\xa9\xc3\xfb\x3a\x7e\x0a\x0a\x0a\xb1\xbe\xc8\xcb\xc8\xb7\xc8\xcf\xd2\xd4\xc9\xcf\xbd\xbb\xd2\xd7\x2c\xcd\xac\xd2\xe2\xbd\xab\xc6\xe4\xbc\xc6\xc8\xeb\xb1\xbe\xd5\xcb\xbb\xa7\x0a\x13\xcd\xa8\xc1\xaa\xbf\xcd\xbb\xa7\xba\xc5\x3a\x39\x39\x30\x34\x34\x30\x31\x34\x38\x31\x36\x36\x30\x30\x30\x0a\x7e\xb3\xd6\xbf\xa8\xc8\xcb\xc7\xa9\xc3\xfb\x3a\x7e\x0a\x0a\x0a\xb1\xbe\xc8\xcb\xc8\xb7\xc8\xcf\xd2\xd4\xc9\xcf\xbd\xbb\xd2\xd7\x2c\xcd\xac\xd2\xe2\xbd\xab\xc6\xe4\xbc\xc6\xc8\xeb\xb1\xbe\xd5\xcb\xbb\xa7\x02";
+unsigned char s8F05[]="\x10\x35\xd4\xaa\xb4\xfa\xbd\xf0\xc8\xaf\x11\x68\x74\x74\x70\x3a\x2f\x2f\x77\x65\x69\x78\x69\x6e\x2e\x71\x71\x2e\x63\x6f\x6d\x2f\x71\x2f\x6d\x44\x5f\x39\x49\x67\x6a\x6c\x76\x78\x54\x47\x76\x41\x31\x4a\x49\x42\x54\x79\x02";
+int n8F03Len;
+int n8F05Len;
+
+unsigned char *mystrtok(unsigned char *string_org, const unsigned char* demial, int *length)
+{
+    unsigned char *p , *pResult;
+    char state_table[256];
+    *length = 0;
+
+    memset(state_table, 0, 256);
+    p = demial;
+    while(*p)
+    {
+        state_table[*p] = 1;
+        ++p;
+    }
+
+    if(string_org != NULL)
+        pStrtok = string_org;
+
+    p = pStrtok;
+    pResult = pStrtok;
+
+    while(*p)
+    {
+        if(state_table[*p])
+            break;
+        ++p;
+    }
+    *length = p - pStrtok;
+    if(*p)
+    {
+        pStrtok = p+1;
+    }
+    else
+        pStrtok = NULL;
+    return pResult;
+}
+
+int main()
+{
+    uchar ret;
+    int nLen = 0, nLenRemain;
+    int nRet;
+    uchar sBuf[256] ={0};
+    uchar sBuff[256] = {0};
+    uchar *p = NULL, *string;
+    uchar *m = NULL;
+    uchar *n = NULL;
+    uchar dataHolder;//0x10:共有 0x11:持卡人 0x12:商户 0x13:收单机构
+    int ticketIndex = 0;
+
+
+    n8F03Len = strlen(s8F03);
+    n8F05Len = strlen(s8F05);
+
+    s_Printer_Debug("%s:%d:n8F03Len[%d]  8F05Len[%d]\r\n",__FILE__,__LINE__,n8F03Len,n8F05Len);
+    if(n8F03Len)
+        string = s8F03;
+    else
+        return E_PRT_DATAFORMAT;
+
+    if(s8F03[0] != 0x10)
+        return E_PRT_DATAFORMAT;
+
+    s_Printer_Debug("%s:%d:n8F03Len:%d  0x%02x\r\n",__FILE__,__LINE__,n8F03Len,s8F03[n8F03Len-1]);
+    //Lib_LcdCls();
+    //Api_DispString("打印凭单中", LINE1, MIDDLE_DISP,  NORMAL_DISP);
+    ticketIndex = 2;
+
+    for(; ticketIndex >= 0; --ticketIndex)
+    {
+        int i = 1;
+        string = s8F03+1;
+        nLenRemain = n8F03Len-1;
+        s_Printer_Debug("%s:%d:ticketIndex =[%d]%d\r\n",__FILE__, __LINE__ ,ticketIndex , i++);
+        s_Printer_Debug("%s:%d:Remaining Length[%d]\r\n",__FILE__,__LINE__,nLenRemain);
+        dataHolder = 0x10;
+
+        memset(sBuf,0,sizeof(sBuf));
+        nLen = 0;
+
+        #if 0
+        if(flag != 2)
+        {
+            Lib_LcdClrLine(1*(HzType.col), 9*(HzType.row));
+            Api_DispString("打印凭单中", LINE1, MIDDLE_DISP,  NORMAL_DISP);
+        }
+        ret = Lib_PrnInit();
+        Lib_PrnSetGray(6);
+        Lib_PrnSetFont(24, 48, 0x02);
+        #endif
+        if(ticketIndex  == 0)
+            Lib_PrnStr((BYTE*) "===交易凭证(持卡人联)===\n");
+        else if(ticketIndex  == 1)
+            Lib_PrnStr((BYTE*) "====交易凭证(商户联)====\n");
+        else if(ticketIndex  == 2)
+            Lib_PrnStr((BYTE*) "==交易凭证(支付机构联)==\n");
+
+        //Lib_PrnSetFont(24, 24, 0x00);
+
+        memset(sBuf , 0 ,sizeof(sBuf));
+        p = mystrtok(string, "\x0a", &nLen);
+        memcpy(sBuf, p, nLen);
+        Lib_PrnStr((BYTE*) "%s\n",sBuf);
+        nLenRemain -= (nLen+1);
+        while(nLenRemain > 0)
+        {
+            printf("%s:%d:dataholder[%02x]\n",__FILE__,__LINE__,dataHolder);
+            s_Printer_Debug("%s:%d:Remaining Length[%d]\r\n",__FILE__,__LINE__,nLenRemain);
+            memset(sBuf, 0, sizeof(sBuf));
+            printf("%s:%d:dataholder[%02x]\n",__FILE__,__LINE__,dataHolder);
+            p = mystrtok(NULL, "\x0a", &nLen);
+            nLenRemain -= (nLen+1);
+            printf("%s:%d:nLen[%d]\n", __FILE__,__LINE__,nLen);
+            printf("%s:%d:dataholder[%02x]\n",__FILE__,__LINE__,dataHolder);
+            if(nLen == 0)
+            {
+                if((dataHolder == 0x10) || !(dataHolder-ticketIndex-0x11))
+                    Lib_PrnStr((BYTE*) "\n");
+                continue;
+            }
+            memcpy(sBuf, p, nLen);
+            p = sBuf;
+
+            if(sBuf[nLen-1] == 0x02)
+                sBuf[nLen-1] = 0x0a;
+            if(sBuf[0] == 0x11 || sBuf[0] == 0x12 || sBuf[0] == 0x13)
+            {
+                dataHolder = sBuf[0];
+                p++;
+            }
+            if((dataHolder == 0x10) || !(dataHolder-ticketIndex-0x11))
+            {
+                if(*p == 0x7e)
+                {
+                    p++;
+                    if(sBuf[nLen-1] == 0x7e)
+                    {
+                        sBuf[nLen-1] = ' ';
+                    }
+                    //Lib_PrnSetFont(16, 16, 0x33);
+                    Lib_PrnStr((BYTE*) "加粗：%s\n",p);
+                }
+                else
+                {
+                    //Lib_PrnSetFont(24, 24, 0x00);
+                    Lib_PrnStr((BYTE*) "%s\n",p);
+                }
+            }
+        }
+
+
+        s_Printer_Debug("%s:%d:是否存在 n8F05Len[%d]\r\n",__FILE__, __LINE__, n8F05Len);
+
+        memset(sBuf, 0, sizeof(sBuf));
+        if(n8F05Len && !ticketIndex)//二维码打印在持卡人联
+        {
+            m = s8F05;
+
+            while(*m != 0x02)
+            {
+                if(0x10 == *m || 0x11 == *m){
+                    dataHolder = *m;
+                    m++;
+                    nLen = 0;
+                    continue;
+                }
+                if(0x10 == dataHolder)
+                {
+                    sBuf[nLen] = *m;
+                    nLen++;
+                }
+                else if(0x11 == dataHolder)
+                {
+                    sBuff[nLen] = *m;
+                    nLen++;
+                }
+                m ++;
+            }
+            if(strlen(sBuf)){
+                if(0x7e == sBuf[0]){
+                    //Lib_PrnSetFont(16, 16, 0x33);
+                    sBuf[nLen-1] = 0;
+                    Lib_PrnStr((BYTE*) "\n");
+                    Lib_PrnStr((BYTE*) sBuf+1);
+                    Lib_PrnStr((BYTE*) "\n");
+                    s_Printer_Debug("%s:%d:%s\r\n",__FILE__,__LINE__, sBuf);
+                }
+                else{
+                    //Lib_PrnSetFont(24, 24, 0x00);
+                    Lib_PrnStr((BYTE*) "\n%s\n",sBuf);
+                    s_Printer_Debug("%s:%d:%s strlen[%d]\r\n",__FILE__,__LINE__, sBuf, strlen(sBuf));
+                }
+            }
+            if(strlen(sBuff))
+            {
+                printf("QRCode:%s\n", sBuff);
+                //Lib_PrnQRCode(10,0,sBuff);
+            }
+        }
+
+
+        Lib_PrnStr((BYTE*) "\n\n\n\n\n\n\n\n");
+        //ret = PrintData();
+        if(ret != OK)
+            return ret;
+
+
+        if(ticketIndex > 0)
+        {
+            //Lib_LcdClrLine(1*(HzType.col),(9)*(HzType.row));
+            //Api_DispString((char *)"按确认继续打印", LINE4, LEFT_DISP, NORMAL_DISP);
+            //Api_WaitKey(2);
+            system("PAUSE");
+        }
+    }
+
+    return;
+}
+
+#if 0
+int main(int argc, char* argv[])
+{
+    unsigned char string[] ="\x10\xB0\xE6\xB1\xBE\x3A\x53\x2D\x4E\x4C\x53\x50\x36\x30\x2D\x4E\x30\x30\x56\x32\x2E\x30\x31\x36\x30\x32\x32\x36\x0A\xC9\xCC\xBB\xA7\xC3\xFB\x3A\xB1\xCC\xB9\xF0\xD4\xB0\xB2\xCD\xD2\xFB\xB2\xBF\x0A\xC9\xCC\xBB\xA7\xBA\xC5\x3A\x39\x39\x30\x35\x38\x31\x30\x30\x37\x34\x32\x36\x30\x30\x31\x0A\xD6\xD5\xB6\xCB\xBA\xC5\x3A\x30\x30\x30\x30\x30\x30\x32\x30\x20\x20\xB2\xD9\xD7\xF7\xD4\xB1\x3A\x30\x31\x0A\xB7\xA2\xBF\xA8\xBB\xFA\xB9\xB9\x3A\xD6\xD0\xB9\xFA\xB9\xA4\xC9\xCC\xD2\xF8\xD0\xD0\x20\x20\x0A\xCA\xD5\xB5\xA5\xBB\xFA\xB9\xB9\x3A\x34\x38\x32\x31\x30\x30\x30\x31\x0A\x7E\xBF\xA8\xBA\xC5\x3A\x36\x32\x31\x32\x31\x34\x2A\x2A\x2A\x2A\x2A\x2A\x30\x30\x33\x37\x20\x53\x7E\x0A\x7E\xBD\xBB\xD2\xD7\xC0\xE0\xD0\xCD\x3A\xD3\xC5\xBB\xDD\xC8\xAF\xCF\xFB\xB7\xD1\x7E\x0A\xD3\xD0\xD0\xA7\xC6\xDA\x3A\x20\x20\x20\x20\x20\x20\x20\xC5\xFA\xB4\xCE\xBA\xC5\x3A\x30\x30\x30\x30\x30\x36\x0A\xC6\xBE\xD6\xA4\xBA\xC5\x3A\x30\x30\x30\x33\x35\x33\x20\xCA\xDA\xC8\xA8\xC2\xEB\x3A\x0A\xBD\xBB\xD2\xD7\xB2\xCE\xBF\xBC\xBA\xC5\x3A\x31\x36\x30\x34\x30\x36\x35\x31\x36\x37\x39\x31\x0A\xCA\xB1\xBC\xE4\x3A\x32\x30\x31\x36\x2D\x30\x34\x2D\x30\x36\x20\x31\x36\x3A\x31\x31\x3A\x32\x32\x0A\x7E\xBD\xF0\xB6\xEE\x3A\x52\x4D\x42\x20\x38\x30\x2E\x30\x30\x7E\x0A\x7E\xD3\xC5\xBB\xDD\xB6\xEE\xA3\xBA\x52\x4D\x42\x20\x31\x30\x2E\x30\x30\x7E\x0A\x7E\xBF\xA8\xB8\xB6\xB6\xEE\xA3\xBA\x52\x4D\x42\x20\x37\x30\x2E\x30\x30\x7E\x0A\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x0A\xBD\xBB\xD2\xD7\xB5\xA5\xBA\xC5\x3A\x31\x37\x32\x36\x38\x38\x33\x33\x20\x20\x42\x0A\xCF\xFB\xB7\xD1\xA1\xBE\x31\x30\xD4\xAA\xC2\xFA\xB5\xD6\xC8\xAF\xA3\xA8\x35\x30\x2D\x2D\x31\x30\x30\xA1\xBF\x31\xD5\xC5\x0A\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x2D\x11\x7E\xB3\xD6\xBF\xA8\xC8\xCB\xC7\xA9\xC3\xFB\x3A\x7E\x0A\x0A\x0A\xB1\xBE\xC8\xCB\xC8\xB7\xC8\xCF\xD2\xD4\xC9\xCF\xBD\xBB\xD2\xD7\x2C\xCD\xAC\xD2\xE2\xBD\xAB\xC6\xE4\xBC\xC6\xC8\xEB\xB1\xBE\xD5\xCB\xBB\xA7\x12\x7E\xB3\xD6\xBF\xA8\xC8\xCB\xC7\xA9\xC3\xFB\x3A\x7E\x0A\x0A\x0A\xB1\xBE\xC8\xCB\xC8\xB7\xC8\xCF\xD2\xD4\xC9\xCF\xBD\xBB\xD2\xD7\x2C\xCD\xAC\xD2\xE2\xBD\xAB\xC6\xE4\xBC\xC6\xC8\xEB\xB1\xBE\xD5\xCB\xBB\xA7\x0A\x13\x7E\xB3\xD6\xBF\xA8\xC8\xCB\xC7\xA9\xC3\xFB\x3A\x7E\x0A\x0A\x0A\xB1\xBE\xC8\xCB\xC8\xB7\xC8\xCF\xD2\xD4\xC9\xCF\xBD\xBB\xD2\xD7\x2C\xCD\xAC\xD2\xE2\xBD\xAB\xC6\xE4\xBC\xC6\xC8\xEB\xB1\xBE\xD5\xCB\xBB\xA7\x0A\x02";
+    unsigned char buf[1024];
+    unsigned char *p;
+    int len, index;
+    int dataholder;
+
+    index = 2;
+    for(;index >= 0; --index)
+    {
+        memset(buf , 0 ,1024);
+        p = mystrtok(string, "\n", &len);
+        memcpy(buf, p, len);
+        dataholder = buf[0];
+        printf("%s\n",buf+1);
+        while(1)
+        {
+            memset(buf, 0, 1024);
+            p = mystrtok(NULL, "\n", &len);
+            if(len == 0)
+            {
+                if((dataholder == 0x10) || !(dataholder-index-11))
+                    printf("\n");
+                continue;
+            }
+            memcpy(buf, p, len);
+            p = buf;
+
+            if(buf[0] == 0x02)
+                break;
+            if(buf[0] == 0x11 || buf[0] == 0x12 || buf[0] == 0x13)
+            {
+                dataholder = buf[0];
+                p++;
+            }
+            if((dataholder == 0x10) || !(dataholder-index-11))
+            {
+                if(*p == 0x7e)
+                {
+                    p++;
+                    if(buf[len-1] == 0x7e)
+                    {
+                        buf[len-1] = ' ';
+                    }
+                    printf("加粗：%s\n",p);
+                }
+                else
+                    printf("    ：%s\n",p);
+            }
+        }
+
+    }
+
+
+    return 0;
+}
+#endif
+
